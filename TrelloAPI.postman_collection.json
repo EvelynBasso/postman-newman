@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "fecfae50-fd4d-419f-ad22-0b8660f57287",
+		"name": "Trello API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validando",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/560bf4298b3dda300c18d09c?fields=name,url&key=f1ca5b1c8bfab10dcab60fdf0998d860&token=28be340ae08c80f03f7ed0112fb98bfd157a908c064f790c66f1a26d93141136",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						"560bf4298b3dda300c18d09c"
+					],
+					"query": [
+						{
+							"key": "fields",
+							"value": "name,url"
+						},
+						{
+							"key": "key",
+							"value": "f1ca5b1c8bfab10dcab60fdf0998d860"
+						},
+						{
+							"key": "token",
+							"value": "28be340ae08c80f03f7ed0112fb98bfd157a908c064f790c66f1a26d93141136"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Lista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2296b7ed-8146-4d32-80d0-97601678f943",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Codigo de status correto\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Contrato retornado com sucesso\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql(\"Backlog\");\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"listsId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/lists?name=Backlog&idBoard={{boardId}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Backlog"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{boardId}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Lista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cc7281ad-ceb7-4313-b912-5075c083198d",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Request Status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contrato retornado com sucesso\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"Backlog\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/lists/{{listsId}}?fields=name,closed,idBoard,pos&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{listsId}}"
+					],
+					"query": [
+						{
+							"key": "fields",
+							"value": "name,closed,idBoard,pos"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3f327961-e0b6-4822-a978-1f2aeffddc20",
+						"exec": [
+							"pm.test(\"Request Status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/boards/{{boardId}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
