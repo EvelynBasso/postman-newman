@@ -1,2 +1,2 @@
 # postman-newman
-test aout postman and newman
+test about postman and newman
